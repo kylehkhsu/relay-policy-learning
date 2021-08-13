@@ -188,11 +188,12 @@ class KitchenTaskRelaxV1(KitchenV0):
         score = 0.
         return reward_dict, score
 
-    def render(self, mode='human'):
-        if mode =='rgb_array':
-            camera = engine.MovableCamera(self.sim, 1920, 2560)
-            camera.set_pose(distance=2.2, lookat=[-0.2, .5, 2.], azimuth=70, elevation=-35)
-            img = camera.render()
-            return img
+    def render(self, mode='human', camera_id='view_1', resolution=(84,84)):
+        if mode == 'rgb_array':
+            img = self.sim.render(
+                *resolution,
+                camera_id=camera_id
+            )
+            return np.transpose(img, (2, 0, 1)) # want (3, img_size, img_size), not (img_size, img_size, 3)
         else:
             super(KitchenTaskRelaxV1, self).render()
